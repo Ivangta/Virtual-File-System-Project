@@ -8,16 +8,12 @@ namespace Virtual_File_System_Project
     {
         private Folder root;
         private bool shouldExit;
-        Folder currentFolder;
+        Folder CurrentFolder;
 
-        private File root2;
-        File currentFile;
         public NavigationService()
         {
             root = new Folder(null, "root", "root");
-            currentFolder = root;
-            root2 = new File(null, "root2", "root2");
-            currentFile = root2;
+            CurrentFolder = root;
         }
 
 
@@ -26,7 +22,7 @@ namespace Virtual_File_System_Project
             while (!shouldExit)
             {
                 Console.WriteLine("------------------------------------------------");
-                Console.WriteLine(currentFolder.Path);
+                Console.WriteLine(CurrentFolder.Path);
                 Console.WriteLine("Input a command: (type \"commands\" to list all commands)");
                 string command = Console.ReadLine();
                 ExecuteCommand(command);
@@ -44,16 +40,16 @@ namespace Virtual_File_System_Project
                     shouldExit = true;
                     break;
                 case "addFile":
-                    currentFile.Add(new File(currentFile, commandDetails[1], (currentFile.Path + "/" + commandDetails[1])));
+                    CurrentFolder.Add(new File(CurrentFolder, commandDetails[1], (CurrentFolder.Path + "/" + commandDetails[1])));
                     break;
                 case "addFolder":
-                    currentFolder.Add(new Folder(currentFolder, commandDetails[1], (currentFolder.Path + "/" + commandDetails[1])));
+                    CurrentFolder.Add(new Folder(CurrentFolder, commandDetails[1], (CurrentFolder.Path + "/" + commandDetails[1])));
                     break;
                 case "deleteFile":
-                    currentFolder.Remove(currentFolder.GetFileByName(commandDetails[1]));
+                    CurrentFolder.Remove(CurrentFolder.GetFileByName(commandDetails[1]));
                     break;
                 case "deleteFolder":
-                    currentFolder.Remove(currentFolder.GetFolderByName(commandDetails[1]));
+                    CurrentFolder.Remove(CurrentFolder.GetFolderByName(commandDetails[1]));
                     break;
                 case "list":
                     ListContents();
@@ -65,10 +61,10 @@ namespace Virtual_File_System_Project
                     ListCommands();
                     break;
                 case "openFolder":
-                    var targetFolder = currentFolder.GetFolderByName(commandDetails[1]);
+                    var targetFolder = CurrentFolder.GetFolderByName(commandDetails[1]);
                     if (targetFolder != null)
                     {
-                        currentFolder = targetFolder;
+                        CurrentFolder = targetFolder;
                     }
                     else
                     {
@@ -76,10 +72,10 @@ namespace Virtual_File_System_Project
                     }
                     break;
                 case "closeFolder":
-                    var targetFolder2 = currentFolder.Parent;
+                    var targetFolder2 = CurrentFolder.Parent;
                     if (targetFolder2 != null)
                     {
-                        currentFolder = targetFolder2;
+                        CurrentFolder = targetFolder2;
                     }
                     else
                     {
@@ -109,7 +105,7 @@ namespace Virtual_File_System_Project
         private void ListContents()
         {
             Console.WriteLine();
-            var allItems = currentFolder.ListSubItems();
+            var allItems = CurrentFolder.ListSubItems();
             foreach (var item in allItems)
             {
                 var type = ((item is File) ? "file" : "folder");
